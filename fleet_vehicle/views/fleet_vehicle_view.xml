@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="fleet_vehicle_view_form" model="ir.ui.view">
+        <field name="name">fleet.vehicle.view.form</field>
+        <field name="model">fleet.vehicle</field>
+        <field name="inherit_id" ref="fleet.fleet_vehicle_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page name="fleet_registration_document" string="Registration Doc.">
+                    <group>
+                        <field name="stnk_no" />
+                        <field name="expire_date_stnk" />
+                    </group>
+                    <group>
+                        <field name="skpd_no" />
+                        <field name="expire_date_skpd" />
+                    </group>
+                    <group>
+                        <field name="kir_no" />
+                        <field name="expire_date_kir" />
+                    </group>
+                </page>
+                <page name="kir_log" string="KIR History">
+                    <field name="kir_line_ids">
+                        <tree>
+                            <field name="kir_date"/>
+                            <field name="pic"/>
+                            <field name="expiration_kir_date"/>
+                            <field name="notes"/>
+                        </tree>
+                        <form string="KIR History">
+                            <sheet>
+                                <group>
+                                    <group string="General">
+                                        <field name="kir_date"/>
+                                        <field name="pic"/>
+                                        <field name="expiration_kir_date"/>
+                                        <field name="notes"/>
+                                    </group>
+                                </group>
+                            </sheet>
+                        </form>
+                    </field>
+                </page>
+
+                <page name="registration_log" string="Registration History">
+                    <field name="registration_line_ids">
+                        <tree>
+                            <field name="date_registration"/>
+                            <field name="registration_type"/>
+                            <field name="expiration_date"/>
+                            <field name="notes"/>
+                        </tree>
+                        <form string="Registration History">
+                            <sheet>
+                                <group>
+                                    <group string="General">
+                                        <field name="date_registration"/>
+                                        <field name="registration_type"/>
+                                        <field name="pic"/>
+                                        <field name="expiration_date"/>
+                                        <field name="notes"/>
+                                    </group>
+                                </group>
+                            </sheet>
+                        </form>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="inherited_fleet_vehicle_log_services_view_form" model="ir.ui.view">
+        <field name="name">inherited.fleet.vehicle.log.services.view.form</field>
+        <field name="model">fleet.vehicle.log.services</field>
+        <field name="inherit_id" ref="fleet.fleet_vehicle_log_services_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//sheet/group/group[1]/field[@name='description']" position="before">
+                <field name="maintenance_request_id"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

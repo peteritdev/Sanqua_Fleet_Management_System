@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_fleet_vehicle_kir_log,access_fleet_vehicle_kir_log,model_fleet_vehicle_kir_log,fleet.fleet_group_user,1,1,1,1
+access_mechanic_check_log,access_mechanic_check_log,model_mechanic_check_log,fleet.fleet_group_user,1,1,1,1
+access_mechanic_fix_log,access_mechanic_fix_log,model_mechanic_fix_log,fleet.fleet_group_user,1,1,1,1
+access_maintenance_request_driver_request,access_maintenance_request_driver_request,model_maintenance_request_driver_request,fleet.fleet_group_user,1,1,1,1
+access_summary_sparepart_request,access_summary_sparepart_request,model_summary_sparepart_request,fleet.fleet_group_user,1,1,1,1

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record model="ir.ui.view" id="wizard_sync_employee_esanqua_form_view">
+        <field name="name">Wizard Sync Employee e-SanQua</field>
+        <field name="model">wizard.sync.employee.esanqua</field>
+        <field name='priority'>10</field>
+        <field name="arch" type="xml">
+            <form string="Form">
+                <sheet>
+                    <group>
+                        <div width="100%">
+                            Are you sure want to sync employee data from e-SanQua?
+                        </div>
+                    </group>
+                </sheet>
+                <footer>
+                    <button string="Yes" type="object" name="button_sync" class="oe_highlight" />
+                    <button string="No" class="btn-secondary" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_wizard_sync_employee_esanqua" model="ir.actions.act_window">
+        <field name="name">Wizard Sync Employee ESanQua</field>
+        <field name="res_model">wizard.sync.employee.esanqua</field>
+        <field name="view_mode">form</field>
+<!--        <field name="type">ir.actions.act_window</field>-->
+        <field name="view_id" ref="wizard_sync_employee_esanqua_form_view"/>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="wizard_sync_employee_esanqua_menu"
+              name="Sync Employee E-SanQua"
+              action="action_wizard_sync_employee_esanqua"
+              parent="hr.menu_config_employee" sequence="3"/>
+
+</odoo>

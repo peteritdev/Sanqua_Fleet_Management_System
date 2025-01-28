@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="inherited_fleet_vehicle_log_services_view_form" model="ir.ui.view">
+        <field name="name">inherited.fleet.vehicle.log.services.view.form</field>
+        <field name="model">fleet.vehicle.log.services</field>
+        <field name="inherit_id" ref="fleet.fleet_vehicle_log_services_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet/group/group[1]/field[@name='description']" position="before">
+                <field name="state" invisible="1"/>
+                <field name="name"/>
+                <field name="maintenance_request_id"/>
+            </xpath>
+            <xpath expr="//sheet/field[@name='notes']" position="replace">
+                <notebook>
+                    <page name="notes" string="Notes">
+                        <field nolabel="1" name="notes" placeholder="Write here any other information related to the service completed."/>
+                    </page>
+                    <page name="mechanic_check_log" string="Mechanic Check Logs" invisible="state == 'new'">
+
+                        <field name="mechanic_check_log_ids" readonly="state in ('done','canceled')">
+                            <tree editable="bottom">
+                                <field name="driver_request_ids_domain" column_invisible="1"/>
+                                <field name="driver_request_id" domain="driver_request_ids_domain"/>
+                                <field name="check_list"/>
+                            </tree>
+                        </field>
+                    </page>
+                    <page name="mechange_fix_log" string="Mechanic Fix Logs" invisible="state == 'new' or state == 'checking'" >
+
+                        <field name="mechanic_fix_log_ids" readonly="state in ('done','canceled')">
+                            <tree editable="bottom">
+                                <field name="fix_list"/>
+                            </tree>
+                        </field>
+                    </page>
+                    <page name="sparepart_picking" string="Sparepart Request Doc.">
+                        <field name="picking_ids">
+                            <tree create="1" edit="0" delete="0">
+                                <field name="name"/>
+                                <field name="location_id"/>
+                                <field name="location_dest_id"/>
+                                <field name="scheduled_date"/>
+                                <field name="state"/>
+                            </tree>
+                        </field>
+                    </page>
+                    <page name="summary_sparepart_request" string="Summary Sparepart Request">
+                        <field name="summary_sparepart_request_ids">
+                            <tree create="0" edit="0" delete="0">
+                                <field name="product_code"/>
+                                <field name="product_name"/>
+                                <field name="qty_done"/>
+                                <field name="qty_return"/>
+                            </tree>
+                        </field>
+                    </page>
+                </notebook>
+            </xpath>
+            <xpath expr="//form/header/field[@name='state']" position="replace">
+                <field name="state"  widget="statusbar"/>
+            </xpath>
+            <xpath expr="//form/header" position="inside">
+                <button name="do_submit" type="object" class="oe_highlight" string="SUBMIT" invisible="state not in ('new')" />
+                <button name="do_submit" type="object" class="oe_highlight" string="Go to Fixing" invisible="state not in ('checking')" />
+                <button name="do_cancel" confirm="Are you sure want to cancel this service?" type="object" class="btn-danger" string="Cancel" invisible="state in ('canceled', 'done')" />
+                <button name="do_finish" type="object" class="oe_highlight" string="Done" invisible="state not in ('fixing')" />
+            </xpath>
+            <xpath expr="//sheet" position="inside">
+                <div class="oe_button_box" name="button_box" >
+                    <button type="object" class="oe_stat_button" icon="fa-wrench" name="btn_request_sparepart">Request Sparepart</button>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>
