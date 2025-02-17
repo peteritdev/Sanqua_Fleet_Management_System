@@ -46,6 +46,9 @@ class MaintenanceRequest(models.Model):
     #         else:
     #             record.log_service_link = False         
 
+    # check
+    
+
     @api.model
     def create(self, vals):
         res = super(MaintenanceRequest,self).create(vals)
