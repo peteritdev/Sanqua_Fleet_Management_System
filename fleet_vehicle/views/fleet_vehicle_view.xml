@@ -10,7 +10,7 @@
                     <group>
                         <field name="stnk_no" />
                         <field name="expire_date_stnk" />
-                    </group>
+                    </group>    
                     <group>
                         <field name="skpd_no" />
                         <field name="expire_date_skpd" />

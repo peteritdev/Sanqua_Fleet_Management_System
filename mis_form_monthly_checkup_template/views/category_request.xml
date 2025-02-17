@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_category_checkup_request_form" model="ir.ui.view">
+        <field name="name">category.checkup.request.form</field>
+        <field name="model">category.checkup.request</field>
+        <field name="arch" type="xml">
+            <form string="Category Check Up Request">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <!-- <field name="component_checkup_request_ids" invisible="0"/> -->
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_category_checkup_request_tree" model="ir.ui.view">
+        <field name="name">category.checkup.request.tree</field>
+        <field name="model">category.checkup.request</field>
+        <field name="arch" type="xml">
+            <tree string="Category Check Up Request" editable="bottom">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_category_checkup_request" model="ir.actions.act_window">
+        <field name="name">Category Checkup Request</field>
+        <field name="res_model">category.checkup.request</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    
+</odoo>

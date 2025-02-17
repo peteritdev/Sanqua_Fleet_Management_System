@@ -3,6 +3,7 @@ import logging
 from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError, AccessError, UserError
 _logger = logging.getLogger(__name__)
+import json
 
 class MaintenanceRequest(models.Model):
     _inherit = 'maintenance.request'
@@ -15,6 +16,35 @@ class MaintenanceRequest(models.Model):
     driver_request_ids = fields.One2many('maintenance.request.driver.request', 'request_id', string='Driver Request')
     log_service_count = fields.Integer(compute="_compute_log_service")
     is_show_service_log = fields.Integer(default=1)
+    # log_service_date = fields.Datetime(string="Service Date", compute="_compute_log_service_info", store=True)
+    # log_service_name = fields.Text(string="Service Name", compute="_compute_log_service_info", store=True)
+    # log_service_link = fields.Text(string="Log Service Link", compute="_compute_log_service_link")           
+
+    # @api.depends('service_log_id')
+    # def _compute_log_service_info(self):
+    #     for record in self:
+    #         log_services = self.env['fleet.vehicle.log.services'].search(
+    #             [('maintenance_request_id', '=', record.id)], 
+    #             order="date desc"
+    #         )
+    #         if log_services:
+    #             record.log_service_date = log_services[0].date
+    #             record.log_service_name = ', '.join(log_services.mapped('name'))
+    #         else:
+    #             record.log_service_date = False
+    #             record.log_service_name = False
+
+    # @api.depends("service_log_id")
+    # def _compute_log_service_link(self):
+    #     for record in self:
+    #         log_services = self.env['fleet.vehicle.log.services'].search(
+    #             [('maintenance_request_id', '=', record.id)], order="date desc"
+    #         )
+    #         if log_services:
+    #             links = [f"/web#id={log.id}&model=fleet.vehicle.log.services&view_type=form" for log in log_services]
+    #             record.log_service_link = '\n'.join(links)
+    #         else:
+    #             record.log_service_link = False         
 
     @api.model
     def create(self, vals):

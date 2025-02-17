@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- model.name form view -->
+    <record id="template_monthly_checkup_view_form" model="ir.ui.view">
+        <field name="name">template.monthly.checkup.view.form</field>
+        <field name="model">template.monthly.checkup</field>
+        <field name="arch" type="xml">
+            <form string="TEMPLATE MONTHLY CHECK UP">
+                <sheet>
+                        <div class="oe_title">
+                            <label for="name" string="TemplateName"/>
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+                        </div>
+                        <div>
+                        <label for="company_ids" string="Company"/>
+                            <field name="company_ids" widget="many2many_tags"/>
+                        </div>
+                    <group>
+                        <field name="template_monthly_line_ids" >
+                            <tree string="Template Monthly Checkup" editable="bottom">
+                                <field name="category_checkup_request_id"/>
+                                <field name="component_checkup_request_id"/>
+                            </tree>
+                        </field>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="template_monthly_checkup_view_tree" model="ir.ui.view">
+        <field name="name">template.monthly.checkup.tree</field>
+        <field name="model">template.monthly.checkup</field>
+        <field name="arch" type="xml">
+            <tree string="Template Monthly Checkup">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_template_monthly_checkup_request" model="ir.actions.act_window">
+        <field name="name">Template Monthly Checkup</field>
+        <field name="res_model">template.monthly.checkup</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_template_checkup_request"
+          name="Template"
+          parent="menu_monthly_checkup_request"
+          sequence="3"
+          action="action_template_monthly_checkup_request"/>
+
+</odoo>

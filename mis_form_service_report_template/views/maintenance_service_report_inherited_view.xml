@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="fleet_vehicle_log_services_view_tree_inherit" model="ir.ui.view">
+        <field name="name">fleet.vehicle.log.services.tree</field>
+        <field name="model">fleet.vehicle.log.services</field>
+        <field name="inherit_id" ref="fleet.fleet_vehicle_log_services_view_tree" />
+        <field name="arch" type="xml">
+            <xpath expr="//tree/field[@name='state']" position="after">
+                <field name="is_maintenance_type" invisible="1" optional="hide"/>
+                <button name="action_print_service_report" string="Print" type="object" class="oe_highlight" icon="fa-print" invisible="is_maintenance_type == False"/>
+            </xpath>
+        
+        </field>
+    </record>
+
+    <record id="fleet_vehicle_log_services_form_inherit" model="ir.ui.view">
+        <field name="name">fleet.vehicle.log.services.inherit.view.form</field>
+        <field name="model">fleet.vehicle.log.services</field>
+        <field name="inherit_id" ref="fleet.fleet_vehicle_log_services_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form/header" position="inside">
+                <button name="action_print_service_report" string="Print" type="object" class="oe_highlight" icon="fa-print" invisible="is_maintenance_type == False" />
+            </xpath>
+            
+        </field>
+    </record>
+</odoo>

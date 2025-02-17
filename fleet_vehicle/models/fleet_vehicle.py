@@ -2,6 +2,7 @@ import logging
 
 from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError, AccessError, UserError
+from odoo.tools import format_datetime
 
 _logger = logging.getLogger(__name__)
 
@@ -104,13 +105,27 @@ class FleetVehicleLogServices(models.Model):
     maintenance_request_id = fields.Many2one('maintenance.request', string='Maintenance Request', store=True, readonly=True)
     mechanic_check_log_ids = fields.One2many('mechanic.check.log', 'service_log_id', string='Mechanic Checking Logs')
     mechanic_fix_log_ids = fields.One2many('mechanic.fix.log', 'service_log_id', string='Mechanic Fix Logs')
-    vehicle_id = fields.Many2one(related='maintenance_request_id.vehicle_id', string='Vehicle')
+    # vehicle_id = fields.Many2one(related='maintenance_request_id.vehicle_id', string='Vehicle')
 
     state = fields.Selection(selection='_get_selection_state', string='Stage', tracking=True)
 
     picking_ids = fields.One2many('stock.picking', 'service_log_id', string='Sparepart Request', store=True)
     summary_sparepart_request_ids = fields.One2many('summary.sparepart.request', 'service_log_id', string='Summary Sparepart Request')
+    move_ids = fields.One2many(comodel_name="stock.move",inverse_name="service_log_id",string="Sparepart Moves",store=False,compute="_compute_move_ids")
+    is_maintenance_type = fields.Boolean(string='Maintenance Type', compute='_compute_maintenance_type')
 
+    def _compute_maintenance_type(self):
+        for record in self:
+            maintenance_type = record.maintenance_request_id.maintenance_type
+            record.is_maintenance_type = True if maintenance_type == 'corrective' else False
+
+    @api.depends("picking_ids")
+    def _compute_move_ids(self):
+        for record in self:
+            record.move_ids = self.env["stock.move"].search([
+                ("picking_id", "in", record.picking_ids.ids)
+            ])
+            
     # @api.model
     # def default_get(self, default_fields):
     #     res = super(FleetVehicleLogServices, self).default_get(default_fields)
@@ -122,6 +137,7 @@ class FleetVehicleLogServices(models.Model):
 
     @api.model
     def create(self, vals):
+
         res = super(FleetVehicleLogServices, self).create(vals)
         res.write({
             'name': self._fetch_next_seq()
@@ -153,13 +169,18 @@ class FleetVehicleLogServices(models.Model):
             self.write({
                 'state': 'checking'
             })
-        elif self.state == 'checking':
+        # elif self.state == 'checking':
+        #     self.write({
+        #         'state': 'fixing'
+        #     })
+        # elif self.state == 'fixing':
+        #     self.write({
+        #         'state': 'done'
+        #     })
+    def do_fixing(self):
+        if self.state == 'checking':
             self.write({
                 'state': 'fixing'
-            })
-        elif self.state == 'fixing':
-            self.write({
-                'state': 'done'
             })
 
     @api.model
@@ -218,5 +239,28 @@ class MechanicFixLog(models.Model):
 
     service_log_id = fields.Many2one('fleet.vehicle.log.services', 'Service')
     fix_list = fields.Text(string='Fix Description')
+    user_id = fields.Many2one('res.users', 'Mechanic')
+    start_time = fields.Datetime(string='Start Time')
+    finish_time = fields.Datetime(string='Finish Time')
+
+    start_time_fmt = fields.Char(string="Start Time Formatted", compute="_compute_time_format")
+    finish_time_fmt = fields.Char(string="Finish Time Formatted", compute="_compute_time_format")
+
+    @api.depends('start_time', 'finish_time')
+    def _compute_time_format(self):
+        for record in self:
+            record.start_time_fmt = record.start_time and format_datetime(self.env, record.start_time, tz=self.env.user.tz, dt_format='dd MMMM yyyy HH:mm:ss') or ""
+            record.finish_time_fmt = record.finish_time and format_datetime(self.env, record.finish_time, tz=self.env.user.tz, dt_format='dd MMMM yyyy HH:mm:ss') or ""
+
+
+
+class StockMove(models.Model):
+    _inherit = "stock.move"
+
+    service_log_id = fields.Many2one(
+        comodel_name="fleet.vehicle.log.services",
+        related="picking_id.service_log_id",
+        store=True
+    )
 
 

@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<record id="paperformat_a4_service_request" model="report.paperformat">
+		<field name="name">A4 Service Request</field>
+		<field name="default" eval="True"/>
+		<field name="format">A4</field>
+		<field name="page_height">0</field>
+		<field name="page_width">0</field>
+		<field name="orientation">Portrait</field>
+		<field name="margin_top">5</field>
+		<field name="margin_bottom">15</field>
+		<field name="margin_left">15</field>
+		<field name="margin_right">15</field>
+		<field name="header_line" eval="False"/>
+		<field name="header_spacing">0</field>
+		<field name="dpi">90</field>
+	</record>
+
+	<record id="action_template_service_request" model="ir.actions.report">
+		<field name="name">Service Request</field>
+		<field name="model">maintenance.request</field>
+		<field name="paperformat_id" ref="mis_form_request_template.paperformat_a4_service_request"/>
+		<field name="report_type">qweb-pdf</field>
+		<field name="report_name">mis_form_request_template.template_request_document</field>
+		<field name="report_file">mis_form_request_template.template_request_document</field>
+		<field name="binding_model_id" ref="maintenance.model_maintenance_request"/>
+		<field name="print_report_name">"Service Request - %s" % (object.name or '')</field>
+		<field name="binding_type">report</field>
+	</record>
+
+	<template id="template_request_document">
+    <t t-name="mis_form_request_template.template_request_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.basic_layout">
+                                <!-- <div class="header"> -->
+                                <div>
+                                    <table style="width: 100%; border-style: hidden;">  
+                                        <tr>
+                                            <td width="10%" style="border-style: hidden;">
+                                                <img t-if="o.company_id.logo" t-att-src="image_data_uri(o.company_id.logo)" style="max-height: 120px; max-width: 120px;" alt="Logo Perusahaan"/>
+                                            </td>
+                                            <td width="60%" style="font-family: Arial; text-align: left; font-weight: bold; border-style: hidden; position: relative; left: 10px; bottom: 30px;">
+                                                <!-- <t t-esc="o.company_id.name"/> -->
+                                                <span style="font-family: Arial; font-size: 18px; padding: 10px 0px;" t-esc="o.company_id.name"/>
+                                                <br/>
+                                                <span style="font-family: Arial; font-size: 16px;">
+                                                    <t t-esc="o.company_id.street"/> 
+                                                    <t t-if="o.company_id.city"><t t-esc="o.company_id.city"/></t>
+                                                    <t t-if="o.company_id.state_id"><t t-esc="o.company_id.state_id.name"/></t>
+                                                    <br/>
+                                                    <t t-if="o.company_id.phone">Telp. <t t-esc="o.company_id.phone"/></t>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                    
+                                <!-- </div> -->
+                            
+                                                        
+                            <div style="text-align: center; font-family: Arial; font-size: 18px; font-weight: bold; border-bottom: 1px solid black; padding-top: 30px ; padding-bottom:10px;">
+                                    FORM SERVICE REQUEST
+                            </div>
+
+                            <table style="width: 100%; margin-top: 30px; border-style: hidden; font-family: Arial;">
+                                    <tr>
+                                        <td width="30%" height="30" style="border-style: hidden;"><b>Nomor Request<span style="font-size: 18px; position: relative; left: 132px;">:</span></b></td>
+                                        <td width="70%" height="30" style="border-style: hidden;"><span style="font-size: 18px; position: relative; left: 35px;" t-esc="o.request_no"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td width="30%" height="30" style="border-style: hidden;"><b>Tanggal<span style="font-size: 18px;position: relative; left: 190px;">:</span></b></td>
+                                        <td width="70%" height="30" style="border-style: hidden;"><span style="font-size: 18px; position: relative; left: 35px;" t-esc="o.schedule_date.strftime('%d %B %Y')"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td width="30%" height="30" style="border-style: hidden;"><b>Tipe Kendaraan<span style="font-size: 18px; position: relative; left: 132px;">:</span> </b></td>
+                                        <td width="70%" height="30" style="border-style: hidden;"><span style="font-size: 18px; position: relative; left: 35px;" t-esc="o.asset_type"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td width="30%" height="30" style="border-style: hidden;"><b>Nomor Polisi<span style="font-size: 18px; position: relative; left: 154px;">:</span></b></td>
+                                        <td width="70%" height="30" style="border-style: hidden;"><span style="font-size: 18px; position: relative; left: 35px;" t-esc="o.vehicle_id.license_plate"/></td>
+                                    </tr>   
+                                    <tr>
+                                        <td width="30%" height="30" style="border-style: hidden;"><b>KM<span style="font-size: 18px; position: relative; left: 227px;">:</span></b></td>
+                                        <td width="70%" height="30" style="border-style: hidden;"><span style="font-size: 18px; position: relative; left: 35px;" t-esc="o.service_log_id.odometer"/></td>
+                                    </tr>	
+                                    <tr>
+                                        <td width="30%" height="30" style="border-style: hidden;"><b>Pengguna (Supir)<span style="font-size: 18px; position: relative; left: 119px;">:</span></b></td>
+                                        <td width="70%" height="30" style="border-style: hidden;"><span style="font-size: 18px; position: relative; left: 35px;" t-esc="o.employee_id.name"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td width="30%" height="30" style="border-style: hidden;"><b>Penanggungjawab (Mekanik)<span style="font-size: 18px; position: relative; left: 32px;">:</span> </b></td>
+                                        <td width="70%" height="30" style="border-style: hidden;"><span style="font-size: 18px; position: relative; left: 35px;" t-esc="o.user_id.name"/></td>
+                                    </tr>	
+                            </table>
+
+                           
+                            <div style="margin-top: 30px; font-size: 18px; font-family: Arial; ">
+                                <b>Dengan ini kami mengajukan service sebagai berikut:</b>
+                            </div>
+                            
+                            <div class="content">
+                                    <table style="font-size: 18px; font-family: Arial; width: 100%; margin-top: 10px; border: 1px solid black; border-collapse: collapse;">
+                                        <thead>
+                                            <tr>
+                                                <th width="5%" style="border: 1px solid black; text-align: center; padding: 5px;">No.</th>
+                                                <th width="95%" style="border: 1px solid black; padding: 5px;">Driver Request</th>
+                                                </tr>
+                                        </thead>
+                                        <tbody>
+                                                <t t-foreach="o.driver_request_ids" t-as="line">
+                                                    <tr>
+                                                        <td style="font-size: 18px; border: 1px solid black; text-align: center; padding: 5px;">
+                                                        <t t-esc="line_index+1"/>.    
+                                                        </td>
+                                                        <td style="border: 1px solid black; padding: 5px; text-align: left;">
+                                                        <t t-esc="line.name"/>
+                                                        </td>
+                                                    </tr>
+                                                </t>
+                                        </tbody>
+                                    </table>
+                            </div>
+                                <div style="page-break-inside:avoid; page-break-after:auto">
+                            
+                                    <div style="margin-top: 30px; font-size: 18px; font-family: Arial;">
+                                        Demikian permohonan ini kami buat.
+                                    </div>
+                        
+
+                                    <div class="mt64 row" name="signature">
+                                        <div class="col-4 sender-signature">
+                                            <div class="mt32" style="text-align: center;">
+                                                <p style="font-size: 18px;  font-family: Arial;">Pemohon,</p>
+                                                <br/><br/><br/><br/><br/><br/>
+                                                <p>(............................................................)</p>
+                                                <p style="font-size: 18px; font-weight: 600; font-family: Arial;">Supir</p>
+                                            </div>
+                                        
+                                        </div>
+
+                                        <div class="col-4 receiver-signature">
+                                            <div class="mt32" style="text-align: center;">
+                                                <p style="font-size: 18px;  font-family: Arial;">Dicek Oleh,</p>
+                                                    <br/><br/><br/><br/><br/><br/>
+                                                    <p>(............................................................)</p>
+                                                    <p style="font-size: 18px; font-weight: 600; font-family: Arial;">Mekanik</p>
+                                            </div>										
+                                        </div> 
+                                        <div class="col-4 receiver-signature">
+                                            <div class="mt32" style="text-align: center;">
+                                                <p style="font-size: 18px;  font-family: Arial;">Disetujui Oleh,</p>
+                                                <br/><br/><br/><br/><br/><br/>
+                                                <p>(............................................................)</p>
+                                                <p style="font-size: 18px; font-weight: 600; font-family: Arial;">Manager Service &amp; Rental</p>
+                                            </div>
+                                        </div> 
+                                    </div>
+
+                                    <div style="margin-top: 100px;">
+                                        <table style="width: 100%; border-style: hidden; margin: 10px 0px;  page-break-inside:avoid; page-break-after:auto">
+                                            <tr>
+                                                <td width="100%" height="50" style="font-size: 18px; font-family: Arial; " class="px-2 py-2 pr-5">
+                                                    <b>Keterangan:</b>
+                                                    <br/><br/>
+                                                    <span t-esc="o.description"/>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            
+                </t>
+            </t>
+        </t>
+    </t>
+</template>
+</odoo>

@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<record id="paperformat_a4_monthly_checkup" model="report.paperformat">
+		<field name="name">A4 Monthly Check Up</field>
+		<field name="default" eval="True"/>
+		<field name="format">A4</field>
+		<field name="page_height">0</field>
+		<field name="page_width">0</field>
+		<field name="orientation">Portrait</field>
+		<field name="margin_top">5</field>
+		<field name="margin_bottom">10</field>
+		<field name="margin_left">10</field>
+		<field name="margin_right">10</field>
+		<field name="header_line" eval="False"/>
+		<field name="header_spacing">5</field>
+		<field name="dpi">90</field>
+	</record>
+
+	<record id="action_template_monthly_checkup" model="ir.actions.report">
+		<field name="name">Monthly Check Up</field>
+		<field name="model">fleet.vehicle.log.services</field>
+		<field name="paperformat_id" ref="mis_form_monthly_checkup_template.paperformat_a4_monthly_checkup"/>
+		<field name="report_type">qweb-pdf</field>
+		<field name="report_name">mis_form_monthly_checkup_template.template_monthly_checkup_document</field>
+		<field name="report_file">mis_form_monthly_checkup_template.template_monthly_checkup_document</field>
+		<field name="binding_model_id" ref="maintenance.model_maintenance_request"/>
+		<field name="print_report_name">"Monthly Checku Up - %s" % (object.name or '')</field>
+		<field name="binding_type">report</field>
+	</record>
+
+	<template id="template_monthly_checkup_document">
+    <t t-name="mis_form_monthly_checkup_template.template_monthly_checkup_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.basic_layout">    
+                    <head>
+                        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>                     
+                    </head>            
+                        <div>
+                            <table style="width: 100%; border-style: hidden;">  
+                                <tr>
+                                    <td width="10%" style="border-style: hidden;">
+                                        <img t-if="o.company_id.logo" t-att-src="image_data_uri(o.company_id.logo)" style="max-height: 120px; max-width: 120px;" alt="Logo Perusahaan"/>
+                                    </td>
+                                    <td width="60%" style="font-family: Arial; text-align: left; font-weight: bold; border-style: hidden; position: relative; left: 10px; bottom: 30px;">
+                                            <span style="font-family: Arial; font-size: 18px; padding: 10px 0px;" t-esc="o.company_id.name"/>
+                                            <br/>
+                                            <span style="font-family: Arial; font-size: 16px;">
+                                            <t t-esc="o.company_id.street"/> 
+                                            <t t-if="o.company_id.city"><t t-esc="o.company_id.city"/></t>
+                                                <t t-if="o.company_id.state_id"><t t-esc="o.company_id.state_id.name"/></t>
+                                                <br/>
+                                            <t t-if="o.company_id.phone">Telp. <t t-esc="o.company_id.phone"/></t>
+                                            </span>
+                                    </td>
+                                    <td width="30%" style="border-style: hidden;">
+                                        <div style="position: relative; left: 112px; bottom: 20px;">
+                                        <t t-set="state_mapping" t-value="{'new': 'Draft', 'checking': 'On Checking', 'fixing': 'On Fixing', 'done': 'Done', 'canceled': 'Canceled'}"/>
+                                        <t t-set="state_colors" t-value="{
+                                                                            'new': 'background-color:rgb(160, 160, 160); font-family: Arial; font-size: 24px; text-align: center; border: 1px solid black; padding: 8px 53px; font-weight: 400;', 
+                                                                            'checking': 'background-color:rgb(236, 238, 121); font-family: Arial; font-size: 24px; text-align: center; border: 1px solid black; padding: 8px; font-weight: 400;',
+                                                                            'fixing': 'background-color:rgb(72, 203, 236); font-family: Arial; font-size: 24px; text-align: center; border: 1px solid black; padding: 8px; font-weight: 400;',
+                                                                            'done': 'background-color: #5cb85c; font-family: Arial; font-size: 24px; text-align: center; border: 1px solid black; padding: 15px; font-weight: 400;',
+                                                                            'canceled': 'background-color:#d9534f; font-family: Arial; font-size: 24px; text-align: center; border: 1px solid black; padding: 8px; font-weight: 400;'
+                                                                        }"/>
+                                            <!-- <span class="state_colors" t-att-data-state="o.state" style="font-family: Arial; font-size: 24px; text-align: center; border: 1px solid black; padding: 8px; text-align: center;"><t t-esc="state_mapping.get(o.state, 'Unknown')"/></span> -->
+                                            <span class="state_colors"
+                                                t-att-style="state_colors.get(o.state, '')"
+                                                style="font-family: Arial; font-size: 24px; text-align: center; border: 1px solid black; padding: 8px;">
+                                                <t t-esc="state_mapping.get(o.state, 'Unknown')"/>
+                                            </span>
+                                        </div>
+                                        
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                
+                
+                        <div style="text-align: center; font-family: Arial; font-size: 18px; font-weight: 600; margin-top: 50px; border-bottom: 1px solid black; padding-bottom:10px;">
+                            LEMBAR PEMERIKSAAN BULANAN
+                            <br/>
+                            <span style="text-align: center; font-family: Arial; font-size: 24px; font-weight: 600; margin-top: 20px;" t-esc="o.name"/>
+                        </div>
+
+                        <table style="width: 100%; margin-top: 50px; border-style: hidden; font-size: 18px;">
+                            <tr>    
+                                <td width="10%" height="30" style="font-family: Arial; border-style: hidden;"><b>Nopol<span style="font-weight: 600; position: relative; left: 114px;">:</span></b></td>
+                                <td width="50%" height="30" style="font-family: Arial; border-style: hidden;"><span style="position: relative; left: 18px;" t-esc="o.vehicle_id.license_plate"/></td>
+                                <!-- <td width="10%" height="30" style="font-family: Arial; border-style: hidden;"><b>No. Servis<span style="font-weight: 600; position: relative; left: 6px;">:</span></b></td>
+                                <td width="10%" height="30" style="font-family: Arial; border-style: hidden;"><span style="position: relative; left: 6px;" t-esc="o.name"/></td>         -->
+                            </tr>
+                            <tr>    
+                                <td width="10%" height="30" style="font-family: Arial; border-style: hidden;"><b>Jenis Kendaraan<span style="font-weight: 600; position: relative; left: 21px;">:</span></b></td>
+                                <td width="30%" height="30" style="font-family: Arial; border-style: hidden;"><span style="position: relative; left: 18px;" t-esc="o.vehicle_id.model_id.name"/></td>
+                            </tr>
+                        </table>                      
+                        
+                        <table style="width: 100%; border-collapse: collapse; margin-top: 30px; font-size: 18px;">
+                            <thead>
+                                <tr>
+                                    <td rowspan="2" style="border: 1px solid black; padding: 8px; font-weight: 600; text-align: center;">No.</td>
+                                    <td rowspan="2" style="border: 1px solid black; padding: 8px; font-weight: 600; text-align: center;">BAGIAN YANG DIPERIKSA</td>
+                                    <td rowspan="2" style="border: 1px solid black; padding: 8px; font-weight: 600; text-align: center;">KOMPONEN YANG DIPERIKSA</td>
+                                    <td colspan="5" style="border: 1px solid black; padding: 8px; font-weight: 600; text-align: center;">PEMERIKSAAN PENGEMUDI</td>
+                                    <td rowspan="2" style="border: 1px solid black; padding: 8px; font-weight: 600; text-align: center;">REKOMENDASI KE MEKANIK</td>
+                                </tr>
+                                <tr>
+                                    <td style="border: 1px solid black; padding: 8px; font-weight: 600; text-align: center;">R</td>
+                                    <td style="border: 1px solid black; padding: 8px; font-weight: 600; text-align: center;">G</td>
+                                    <td style="border: 1px solid black; padding: 8px; font-weight: 600; text-align: center;">P</td>
+                                    <td style="border: 1px solid black; padding: 8px; font-weight: 600; text-align: center;">V</td>
+                                    <td style="border: 1px solid black; padding: 8px; font-weight: 600; text-align: center;">X</td>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <t t-set="global_counter" t-value="0"/>
+                                <t t-set="processed_parts" t-value="set()"/>
+
+                                <!-- Ambil data checkup dengan query SQL -->
+                                <t t-set="checkup_data" t-value="o.get_checkup_data()"/>
+
+                                <t t-foreach="checkup_data" t-as="service">
+                                    <t t-if="service['category_checkup_request_id'] not in processed_parts">
+                                        <t t-set="services_group" t-value="[s for s in checkup_data if s['category_checkup_request_id'] == service['category_checkup_request_id']]"/>
+                                        <t t-set="rowspan_count" t-value="len(services_group)"/>
+                                        <t t-set="processed_parts" t-value="processed_parts | set([service['category_checkup_request_id']])"/>
+
+                                        <t t-foreach="services_group" t-as="grouped_service" t-foreach-index="index">
+                                            <tr>
+                                                <!-- NO -->
+                                                <td style="border: 1px solid black; padding: 8px; text-align: center;"  t-if="grouped_service_index == 0" t-att-rowspan="rowspan_count">
+                                                    <t t-esc="global_counter + 1"/>
+                                                    <t t-set="global_counter" t-value="global_counter + 1"/>.
+                                                </td>
+
+                                                <!-- BAGIAN YANG DIPERIKSA -->
+                                                <td t-if="grouped_service_index == 0" t-att-rowspan="rowspan_count" style="border: 1px solid black; padding: 8px;  text-align: center;">
+                                                    <t t-esc="grouped_service['category_name']"/>
+                                                </td>
+
+                                                <!-- KOMPONEN YANG DIPERIKSA -->
+                                                <td style="border: 1px solid black; padding: 8px;">
+                                                    <t t-esc="grouped_service_index+1"/>. <t t-esc="grouped_service['component_name']"/>
+                                                </td>
+
+                                                <!-- PEMERIKSAAN PENGEMUDI -->
+                                                <td style="border: 1px solid black; padding: 8px; text-align: center;">
+                                                    <t t-if="grouped_service['check_list_r']"><span class="fa fa-check" style="color: green;"/></t>
+                                                </td>
+                                                <td style="border: 1px solid black; padding: 8px; text-align: center;">
+                                                    <t t-if="grouped_service['check_list_g']"><span class="fa fa-check" style="color: green;"/></t>
+                                                </td>
+                                                <td style="border: 1px solid black; padding: 8px; text-align: center;">
+                                                    <t t-if="grouped_service['check_list_p']"><span class="fa fa-check" style="color: green;"/></t>
+                                                </td>
+                                                <td style="border: 1px solid black; padding: 8px; text-align: center;">
+                                                    <t t-if="grouped_service['check_list_v']"><span class="fa fa-check" style="color: green;"/></t>
+                                                </td>
+                                                <td style="border: 1px solid black; padding: 8px; text-align: center;">
+                                                    <t t-if="grouped_service['check_list_x']"><span class="fa fa-check" style="color: green;"/></t>
+                                                </td>
+
+                                                <!-- REKOMENDASI KE MEKANIK -->
+                                                <td style="border: 1px solid black; padding: 8px;">
+                                                    <t t-esc="grouped_service['desc_mechanic'] or ''"/>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </t>
+                                </t>
+                            </tbody>    
+                            
+                        </table>
+                        <div style="margin-top: 5px; font-size: 18px; font-family: Arial; border: 1px solid black; padding: 8px; ">
+                            <b>Keterangan:</b>
+                            <div>
+                                <b>R:</b><span> Rusak</span>, <b>G:</b><span> Ganti</span>, <b>P:</b><span> Periksa</span>, <b>V:</b><span> Layak Jalan</span>, <b>X:</b><span> Tidak Layak Jalan</span>
+                            </div>
+                        </div>
+
+                </t>
+            </t>
+        </t>
+    </t>
+</template>
+</odoo>
+ <!-- vertical-align: middle; -->

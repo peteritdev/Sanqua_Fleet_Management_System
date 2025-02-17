@@ -1,0 +1,1 @@
+from . import maintenance_service_report_inherited

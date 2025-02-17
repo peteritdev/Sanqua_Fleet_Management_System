@@ -11,12 +11,12 @@
                 <field name="maintenance_request_id"/>
             </xpath>
             <xpath expr="//sheet/field[@name='notes']" position="replace">
+                <field name="is_maintenance_type" invisible="1"/>
                 <notebook>
                     <page name="notes" string="Notes">
                         <field nolabel="1" name="notes" placeholder="Write here any other information related to the service completed."/>
                     </page>
-                    <page name="mechanic_check_log" string="Mechanic Check Logs" invisible="state == 'new'">
-
+                    <page name="mechanic_check_log" string="Mechanic Check Logs" invisible="state == 'new' or is_maintenance_type == False">
                         <field name="mechanic_check_log_ids" readonly="state in ('done','canceled')">
                             <tree editable="bottom">
                                 <field name="driver_request_ids_domain" column_invisible="1"/>
@@ -29,7 +29,10 @@
 
                         <field name="mechanic_fix_log_ids" readonly="state in ('done','canceled')">
                             <tree editable="bottom">
+                                <field name="user_id"/>
                                 <field name="fix_list"/>
+                                <field name="start_time"/>
+                                <field name="finish_time"/>
                             </tree>
                         </field>
                     </page>
@@ -61,7 +64,8 @@
             </xpath>
             <xpath expr="//form/header" position="inside">
                 <button name="do_submit" type="object" class="oe_highlight" string="SUBMIT" invisible="state not in ('new')" />
-                <button name="do_submit" type="object" class="oe_highlight" string="Go to Fixing" invisible="state not in ('checking')" />
+                <!-- <button name="do_submit" type="object" class="oe_highlight" string="Go to Fixing" invisible="state not in ('checking')" /> -->
+                <button name="do_fixing" type="object" class="oe_highlight" string="Go to Fixing" invisible="state not in ('checking')" />
                 <button name="do_cancel" confirm="Are you sure want to cancel this service?" type="object" class="btn-danger" string="Cancel" invisible="state in ('canceled', 'done')" />
                 <button name="do_finish" type="object" class="oe_highlight" string="Done" invisible="state not in ('fixing')" />
             </xpath>
@@ -72,4 +76,15 @@
             </xpath>
         </field>
     </record>
+
+    <record id="fleet_vehicle_log_services_view_tree_inherit" model="ir.ui.view">
+            <field name="name">fleet.vehicle.log.services.tree</field>
+            <field name="model">fleet.vehicle.log.services</field>
+            <field name="inherit_id" ref="fleet.fleet_vehicle_log_services_view_tree" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='date']" position="before">
+                    <field name="name" string="Service No."/>
+                </xpath>
+            </field>
+        </record>
 </odoo>

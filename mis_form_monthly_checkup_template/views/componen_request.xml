@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="view_component_checkup_request_form" model="ir.ui.view">
+        <field name="name">component.checkup.request.form</field>
+        <field name="model">component.checkup.request</field>
+        <field name="arch" type="xml">
+            <form string="Component Checkup Request">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <!-- <field name="part_checkup_request_ids"/> -->
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_component_checkup_request_tree" model="ir.ui.view">
+        <field name="name">component.checkup.request.tree</field>
+        <field name="model">component.checkup.request</field>
+        <field name="arch" type="xml">
+            <tree string="Component Checkup Request" editable="bottom">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- <record id="view_component_checkup_request_search" model="ir.ui.view">
+		<field name="name">component.checkup.request.search</field>
+        <field name="model">component.checkup.request</field>
+        <field name="priority">2</field>
+        <field name="arch" type="xml">
+        	<search string="Search Component Checkup Request">
+            
+            </search>
+        </field>
+    </record> -->
+
+    <record id="action_component_checkup_request" model="ir.actions.act_window">
+        <field name="name">Component Checkup Request</field>
+        <field name="res_model">component.checkup.request</field>
+        <!-- <field name="context">{'group_by':'part_checkup_request_id'}</field> -->
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_monthly_checkup_request"
+            name="Monthly Check Up"
+            parent="maintenance.menu_maintenance_configuration"
+            sequence="20"
+        />
+    <menuitem id="menu_category_checkup_request"
+            name="Category"
+            parent="menu_monthly_checkup_request"
+            sequence="0"
+            action="action_category_checkup_request"/>
+
+    <menuitem id="menu_component_checkup_request"
+          name="Component"
+          parent="menu_monthly_checkup_request"
+          sequence="1"
+          action="action_component_checkup_request"/>
+</odoo>
