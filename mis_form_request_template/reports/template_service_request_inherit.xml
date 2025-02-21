@@ -74,7 +74,7 @@
                                     </tr>
                                     <tr>
                                         <td width="30%" height="30" style="border-style: hidden;"><b>Tipe Kendaraan<span style="font-size: 18px; position: relative; left: 132px;">:</span> </b></td>
-                                        <td width="70%" height="30" style="border-style: hidden;"><span style="font-size: 18px; position: relative; left: 35px;" t-esc="o.asset_type"/></td>
+                                        <td width="70%" height="30" style="border-style: hidden;"><span style="font-size: 18px; position: relative; left: 35px;" t-esc="o.vehicle_id.model_id.name"/></td>
                                     </tr>
                                     <tr>
                                         <td width="30%" height="30" style="border-style: hidden;"><b>Nomor Polisi<span style="font-size: 18px; position: relative; left: 154px;">:</span></b></td>
@@ -82,11 +82,11 @@
                                     </tr>   
                                     <tr>
                                         <td width="30%" height="30" style="border-style: hidden;"><b>KM<span style="font-size: 18px; position: relative; left: 227px;">:</span></b></td>
-                                        <td width="70%" height="30" style="border-style: hidden;"><span style="font-size: 18px; position: relative; left: 35px;" t-esc="o.service_log_id.odometer"/></td>
+                                        <td width="70%" height="30" style="border-style: hidden;"><span style="font-size: 18px; position: relative; left: 35px;" t-esc="o.odometer"/></td>
                                     </tr>	
                                     <tr>
                                         <td width="30%" height="30" style="border-style: hidden;"><b>Pengguna (Supir)<span style="font-size: 18px; position: relative; left: 119px;">:</span></b></td>
-                                        <td width="70%" height="30" style="border-style: hidden;"><span style="font-size: 18px; position: relative; left: 35px;" t-esc="o.employee_id.name"/></td>
+                                        <td width="70%" height="30" style="border-style: hidden;"><span style="font-size: 18px; position: relative; left: 35px;" t-esc="o.driver_id.name"/></td>
                                     </tr>
                                     <tr>
                                         <td width="30%" height="30" style="border-style: hidden;"><b>Penanggungjawab (Mekanik)<span style="font-size: 18px; position: relative; left: 32px;">:</span> </b></td>

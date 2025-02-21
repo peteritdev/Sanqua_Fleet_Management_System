@@ -31,15 +31,5 @@ class MaintenanceRequest(models.Model):
             return False
         return report_action.report_action(self)
 
-    # def get_cleaned_notes(self):
-    #     """
-    #     Menambahkan 'margin-bottom: 0px;' pada tag <p> yang ada di field 'notes'.
-    #     """
-    #     if self.description:
-    #         clean_text = re.sub(r'<p(?![^>]*style=)', r'<p style="margin-bottom: 0px;"', self.description)
-    #         clean_text = re.sub(r'(<p[^>]*style=")([^"]*)"', r'\1margin-bottom: 0px; \2"', clean_text)
-    #         return clean_text.strip()
-    #     return ''
-
-        
+    
         

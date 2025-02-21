@@ -105,7 +105,7 @@ class FleetVehicleLogServices(models.Model):
     maintenance_request_id = fields.Many2one('maintenance.request', string='Maintenance Request', store=True, readonly=True)
     mechanic_check_log_ids = fields.One2many('mechanic.check.log', 'service_log_id', string='Mechanic Checking Logs')
     mechanic_fix_log_ids = fields.One2many('mechanic.fix.log', 'service_log_id', string='Mechanic Fix Logs')
-    # vehicle_id = fields.Many2one(related='maintenance_request_id.vehicle_id', string='Vehicle')
+    vehicle_id = fields.Many2one('fleet.vehicle', related='maintenance_request_id.vehicle_id', string='Vehicle', required=False, store=True, readonly=True)
 
     state = fields.Selection(selection='_get_selection_state', string='Stage', tracking=True)
 
@@ -113,6 +113,19 @@ class FleetVehicleLogServices(models.Model):
     summary_sparepart_request_ids = fields.One2many('summary.sparepart.request', 'service_log_id', string='Summary Sparepart Request')
     move_ids = fields.One2many(comodel_name="stock.move",inverse_name="service_log_id",string="Sparepart Moves",store=False,compute="_compute_move_ids")
     is_maintenance_type = fields.Boolean(string='Maintenance Type', compute='_compute_maintenance_type')
+    service_type = fields.Selection([('internal', 'Internal'), ('external', 'External')], string='Service Type', store=True, required=True)
+    purchaser_id = fields.Many2one('res.partner', string="Driver", store=True, readonly=True, related='maintenance_request_id.driver_id')   
+    service_type_id = fields.Many2one(
+        'fleet.service.type', 'Service Type', required=False,
+        default=lambda self: self.env.ref('fleet.type_service_service_7', raise_if_not_found=False),
+    )
+    display_name = fields.Char(compute='_compute_display_name', string='Display Name', store=True)
+
+
+    def _compute_display_name(self):
+        for record in self:
+            record.display_name = record.name
+    
 
     def _compute_maintenance_type(self):
         for record in self:
@@ -137,11 +150,9 @@ class FleetVehicleLogServices(models.Model):
 
     @api.model
     def create(self, vals):
-
         res = super(FleetVehicleLogServices, self).create(vals)
-        res.write({
-            'name': self._fetch_next_seq()
-        })
+
+        res.write({'name': self._fetch_next_seq()})
         return res
 
     def _fetch_next_seq(self):
@@ -219,7 +230,6 @@ class MechanicCheckLog(models.Model):
 
     service_log_id = fields.Many2one('fleet.vehicle.log.services', 'Service')
     maintenance_request_id = fields.Many2one(related='service_log_id.maintenance_request_id')
-    # driver_request_id = fields.Many2one('maintenance.request.driver.request', domain=lambda self: [('request_id', '=', self.service_log_id.maintenance_request_id.id)])
     driver_request_id = fields.Many2one('maintenance.request.driver.request')
     driver_request_ids_domain = fields.Binary(compute='_get_driver_request_id')
     check_list = fields.Text(string='Check Description')
@@ -232,6 +242,7 @@ class MechanicCheckLog(models.Model):
                 _logger.info('>>> maintenance_request_id: ' + str(rec.maintenance_request_id))
                 domain = [('request_id', '=', rec.maintenance_request_id.id)]
             rec.driver_request_ids_domain = domain
+
 
 class MechanicFixLog(models.Model):
     _name = 'mechanic.fix.log'

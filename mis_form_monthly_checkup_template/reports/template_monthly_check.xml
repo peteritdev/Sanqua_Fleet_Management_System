@@ -87,8 +87,6 @@
                             <tr>    
                                 <td width="10%" height="30" style="font-family: Arial; border-style: hidden;"><b>Nopol<span style="font-weight: 600; position: relative; left: 114px;">:</span></b></td>
                                 <td width="50%" height="30" style="font-family: Arial; border-style: hidden;"><span style="position: relative; left: 18px;" t-esc="o.vehicle_id.license_plate"/></td>
-                                <!-- <td width="10%" height="30" style="font-family: Arial; border-style: hidden;"><b>No. Servis<span style="font-weight: 600; position: relative; left: 6px;">:</span></b></td>
-                                <td width="10%" height="30" style="font-family: Arial; border-style: hidden;"><span style="position: relative; left: 6px;" t-esc="o.name"/></td>         -->
                             </tr>
                             <tr>    
                                 <td width="10%" height="30" style="font-family: Arial; border-style: hidden;"><b>Jenis Kendaraan<span style="font-weight: 600; position: relative; left: 21px;">:</span></b></td>

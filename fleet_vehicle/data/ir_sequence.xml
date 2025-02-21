@@ -1,11 +1,14 @@
+<?xml version='1.0' encoding='utf-8'?>
 <odoo>
     <record model="ir.sequence" id="sequence_maintenance_request">
         <field name="name">Maintenance Request Sequence</field>
         <field name="code">seq.maintenance.request</field>
         <field name="use_date_range" eval="True"/>
+        <field name="company_id" eval="False"/> 
         <field name="padding">5</field>
         <!-- UNCOMMENT BELLOW IF USE PREFIX NOR SUFFIX -->
         <field name="prefix">MR/%(y)s/%(month)s/</field>
         <!-- <field name="suffix">DOC/CODE/%(range_y)s/%(month)s/</field> -->
     </record>
+
 </odoo>

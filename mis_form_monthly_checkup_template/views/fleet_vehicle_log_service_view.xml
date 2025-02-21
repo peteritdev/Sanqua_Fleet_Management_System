@@ -7,7 +7,8 @@
             <field name="arch" type="xml">
                 <xpath expr="//tree/field[@name='state']" position="after">
                     <field name="is_maintenance_type" invisible="1" optional="hide"/>
-                    <button name="action_print_monthly_checkup" string="Print Monthly Check Up" type="object" class="oe_highlight" icon="fa-list" invisible="is_maintenance_type == True" />
+                    <field name="is_checkup_available" invisible="1" optional="hide"/>
+                    <button name="action_print_monthly_checkup" string="Print Monthly Check Up" type="object" class="oe_highlight" icon="fa-list" invisible="is_maintenance_type == True or is_checkup_available == False or state == 'new'" />
                 </xpath>
             </field>
         </record>
@@ -18,11 +19,12 @@
         <field name="inherit_id" ref="fleet.fleet_vehicle_log_services_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//form/header" position="inside">
-                    <button name="action_print_monthly_checkup" string="Print Monthly Check Up" type="object" class="oe_highlight" icon="fa-list" invisible="is_maintenance_type == True"/>
+                    <button name="action_print_monthly_checkup" string="Print Monthly Check Up" type="object" class="oe_highlight" icon="fa-list" invisible="is_maintenance_type == True or is_checkup_available == False or state == 'new'"/>
                 </xpath>
             <xpath expr="//sheet/notebook/page[@name='notes']" position="after">
-                <page name="fleet_vehicle_checkup_service" string="Monthly Check Up Service" invisible="is_maintenance_type == True">
-                    <field name="fleet_vehicle_checkup_service_ids">
+                <field name="is_checkup_available" invisible="1"/>
+                <page name="fleet_vehicle_checkup_service" string="Monthly Check Up Service" invisible="is_maintenance_type == True or is_checkup_available == False or state == 'new'">
+                    <field name="fleet_vehicle_checkup_service_ids" readonly="state in ('done','canceled')">
                             <tree editable="bottom" create="0" edit="1" delete="0">     
                                 <field name="category_checkup_request_id" readonly="1"/>
                                 <field name="component_checkup_request_id" readonly="1"/>

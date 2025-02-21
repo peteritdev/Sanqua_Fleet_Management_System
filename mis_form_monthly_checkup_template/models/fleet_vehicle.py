@@ -13,6 +13,12 @@ class FleetVehicleLogServices(models.Model):
  
 
     fleet_vehicle_checkup_service_ids = fields.One2many('fleet.vehicle.checkup.service', 'log_service_id', string='Checkup Service',store=True)
+    is_checkup_available = fields.Boolean(string="Checkup Available",compute="_compute_is_checkup_available",store=False)
+
+    @api.depends('fleet_vehicle_checkup_service_ids')
+    def _compute_is_checkup_available(self):
+        for record in self:
+            record.is_checkup_available = bool(record.fleet_vehicle_checkup_service_ids)
 
     def action_print_monthly_checkup(self):
         """ Generate Monthly Checkup PDF """

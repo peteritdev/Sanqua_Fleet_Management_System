@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="view_master_problem_driver_form" model="ir.ui.view">
+        <field name="name">master.problem.vehicle.form</field>
+        <field name="model">master.problem.vehicle</field>
+        <field name="arch" type="xml">
+            <form string="Problem">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                    <group>
+                        <field name="category_id"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_master_problem_driver_tree" model="ir.ui.view">
+        <field name="name">master.problem.vehicle.tree</field>
+        <field name="model">master.problem.vehicle</field>
+        <field name="arch" type="xml">
+            <tree string="Problem" editable="bottom">
+                <field name="name"/>
+                <field name="category_id"/>
+            </tree>
+        </field>
+    </record>
+
+
+
+
+    <record id="action_master_problem_driver" model="ir.actions.act_window">
+        <field name="name">Vehicle Problem</field>
+        <field name="res_model">master.problem.vehicle</field>
+         <!-- <field name="context">{'group_by':'category_id'}</field> -->
+        <field name="view_mode">tree</field>
+    </record>
+
+    <record id="view_category_problem_vehicle_tree" model="ir.ui.view">
+        <field name="name">category.problem.vehicle.tree</field>
+        <field name="model">category.problem.vehicle</field>
+        <field name="arch" type="xml">
+            <tree string="Category" editable="bottom">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_master_problem_category" model="ir.actions.act_window">
+        <field name="name">Vehicle Category Problem</field>
+        <field name="res_model">category.problem.vehicle</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+    <menuitem id="menu_master_problem_driver"
+            name="Vehicle Problem"
+            parent="maintenance.menu_maintenance_configuration"
+            sequence="21"
+        />
+
+    <menuitem id="menu_master_problem_category"
+          name="Category"
+          parent="menu_master_problem_driver"
+          sequence="1"
+          action="action_master_problem_category"/>
+
+    <menuitem id="menu_master_problem"
+          name="Problem"
+          parent="menu_master_problem_driver"
+          sequence="2"
+          action="action_master_problem_driver"/>
+</odoo>
