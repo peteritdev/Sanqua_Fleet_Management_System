@@ -61,20 +61,20 @@
                         <table style="width: 100%; margin-top: 30px; font-family: Arial; border-style: hidden; font-size: 18px;">
                             <tr>
                                 <td width="15%" height="30" style="font-family: Arial; border-style: hidden;"><b>Pemohon<span style="font-weight: 600; position: relative; left: 50px;">:</span></b></td>
-                                <td width="30%" height="30" style="font-family: Arial; border-style: hidden;"><span style="position: relative; left: 7px;" t-esc="o.maintenance_request_id.employee_id.name"/></td>
+                                <td width="30%" height="30" style="font-family: Arial; border-style: hidden;"><span style="position: relative; left: 7px;" t-esc="o.maintenance_request_id.driver_id.name"/></td>
                                 <td width="27%" height="30" style="font-family: Arial; border-style: hidden;"><b>Type Kendaraan<span style="font-weight: 600; position: relative; left: 93px;">:</span></b></td>
                                 <td width="30%" height="30" style="font-family: Arial; border-style: hidden;"><span style="position: relative; left: 19px;" t-esc="o.maintenance_request_id.vehicle_id.name"/></td>
                             </tr>
                             <tr>
                                 <td width="17%" height="30" style="font-family: Arial; border-style: hidden;"><b>Tanggal<span style="font-weight: 600; position: relative; left: 65px;">:</span></b></td>
                                 <td width="30%" height="30" style="font-family: Arial; border-style: hidden;"><span style="position: relative; left: 8px;" t-esc="o.date.strftime('%d %B %Y')"/></td>
-                                <td width="20%" height="30" style="font-family: Arial; border-style: hidden;"><b>Service Hours/KM<span style="font-weight: 600; position: relative; left: 78px;">:</span></b></td>
-                                <td width="30%" height="30" style="font-family: Arial; border-style: hidden;"><span style="position: relative; left: 19px;" t-esc="o.odometer"/></td>
+                                <td width="20%" height="30" style="font-family: Arial; border-style: hidden;"><b>Service Hours/KM<span style="font-weight: 600; position: relative; left: 79px;">:</span></b></td>
+                                <td width="30%" height="30" style="font-family: Arial; border-style: hidden;"><span style="position: relative; left: 19px;" t-esc="o.maintenance_request_id.odometer"/></td>
                             </tr>
                             <tr>
-                                <td width="15%" height="30" style="font-family: Arial; border-style: hidden;"><b>No. Polisi<span style="font-weight: 600; position: relative; left: 51px;">:</span></b></td>
+                                <td width="15%" height="30" style="font-family: Arial; border-style: hidden;"><b>No. Polisi<span style="font-weight: 600; position: relative; left: 52px;">:</span></b></td>
                                 <td width="30%" height="30" style="font-family: Arial; border-style: hidden;"><span style="position: relative; left: 7px;" t-esc="o.maintenance_request_id.vehicle_id.license_plate"/></td>
-                                <td width="25%" height="30" style="font-family: Arial; border-style: hidden;"><b>No. Service<span style="font-weight: 600; position: relative; left: 134px;">:</span></b></td>
+                                <td width="25%" height="30" style="font-family: Arial; border-style: hidden;"><b>No. Service<span style="font-weight: 600; position: relative; left: 135px;">:</span></b></td>
                                 <td width="30%" height="30" style="font-family: Arial; border-style: hidden;"><span style="position: relative; left: 19px;" t-esc="o.name"/></td> 
                             </tr>
 						
@@ -137,54 +137,7 @@
                             </tbody>
                         </table>
 
-                        <!-- <table style="width:100%; border-collapse: collapse; margin-top: 20px; font-size: 18px; page-break-inside:avoid; page-break-after:auto">
-                        <thead>
-                            <tr>
-                                <th style="font-weight: 600; font-family: Arial; border: 1px solid black; padding: 8px; width: 8%;"><b>No.</b></th>
-                                <th style="font-weight: 600; font-family: Arial; border: 1px solid black; padding: 8px;"><b>Spare Part Rekomendasi</b></th>
-                                <th style="font-weight: 600; font-family: Arial; border: 1px solid black; padding: 8px; width: 8%;"><b>No.</b></th>
-                                <th style="font-weight: 600; font-family: Arial; border: 1px solid black; padding: 8px;"><b>Pergantian Spare Part</b></th>
-                                <th style="font-weight: 600; font-family: Arial; border: 1px solid black; padding: 8px;"><b>Qty</b></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-
-                            <t t-set="max_length" t-value="max(len(o.move_ids), len(o.summary_sparepart_request_ids))"/>
-                            <t t-set="move_list" t-value="o.move_ids"/>
-                            <t t-set="summary_list" t-value="o.summary_sparepart_request_ids"/>
-
-                            <t t-foreach="range(max_length)" t-as="index">
-                                <tr>
-                                    <td style="font-family: Arial; border: 1px solid black; padding: 8px; text-align: center;">
-                                        <t t-if="index &lt; len(move_list)">
-                                            <t t-esc="index+1"/>.
-                                        </t>
-                                    </td>
-                                    <td style="font-family: Arial; border: 1px solid black; padding: 8px;">
-                                        <t t-if="index &lt; len(move_list)">
-                                            <t t-esc="move_list[index].product_id.name"/>
-                                        </t>
-                                    </td>
-
-                                    <td style="font-family: Arial; border: 1px solid black; padding: 8px; text-align: center;">
-                                        <t t-if="index &lt; len(summary_list)">
-                                            <t t-esc="index+1"/>.
-                                        </t>
-                                    </td>
-                                    <td style="font-family: Arial; border: 1px solid black; padding: 8px;">
-                                        <t t-if="index &lt; len(summary_list)">
-                                            <t t-esc="summary_list[index].product_name"/>
-                                        </t>
-                                    </td>
-                                    <td style="font-family: Arial; border: 1px solid black; padding: 8px; text-align: center;">
-                                        <t t-if="index &lt; len(summary_list)">
-                                            <t t-esc="summary_list[index].qty_done"/>
-                                        </t>
-                                    </td>
-                                </tr>
-                            </t>
-                        </tbody>
-                        </table> -->
+                       
                         <table style="width:100%; border-collapse: collapse; margin-top: 20px; font-size: 18px; page-break-inside:avoid; page-break-after:auto">
                             <thead>
                                 <tr>

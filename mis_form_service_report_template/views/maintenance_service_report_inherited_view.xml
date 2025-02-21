@@ -7,7 +7,7 @@
         <field name="arch" type="xml">
             <xpath expr="//tree/field[@name='state']" position="after">
                 <field name="is_maintenance_type" invisible="1" optional="hide"/>
-                <button name="action_print_service_report" string="Print" type="object" class="oe_highlight" icon="fa-print" invisible="is_maintenance_type == False"/>
+                <button name="action_print_service_report" string="Print" type="object" class="oe_highlight" icon="fa-print" invisible="is_maintenance_type == False or state == 'new'"/>
             </xpath>
         
         </field>
@@ -19,7 +19,7 @@
         <field name="inherit_id" ref="fleet.fleet_vehicle_log_services_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//form/header" position="inside">
-                <button name="action_print_service_report" string="Print" type="object" class="oe_highlight" icon="fa-print" invisible="is_maintenance_type == False" />
+                <button name="action_print_service_report" string="Print" type="object" class="oe_highlight" icon="fa-print" invisible="is_maintenance_type == False or state == 'new'"/>
             </xpath>
             
         </field>

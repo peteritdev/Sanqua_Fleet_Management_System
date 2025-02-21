@@ -70,7 +70,7 @@
         </field>
     </record>
 
-    <record id="inherited_fleet_vehicle_log_services_view_form" model="ir.ui.view">
+    <!-- <record id="fleet_vehicle_log_services_view_form_inherit" model="ir.ui.view">
         <field name="name">inherited.fleet.vehicle.log.services.view.form</field>
         <field name="model">fleet.vehicle.log.services</field>
         <field name="inherit_id" ref="fleet.fleet_vehicle_log_services_view_form" />
@@ -79,5 +79,5 @@
                 <field name="maintenance_request_id"/>
             </xpath>
         </field>
-    </record>
+    </record> -->
 </odoo>

@@ -4,14 +4,23 @@
         <field name="model">maintenance.request</field>
         <field name="inherit_id" ref="maintenance.hr_equipment_request_view_form" />
         <field name="arch" type="xml">
+            <xpath expr="//field[@name='employee_id']" position="attributes">
+                <attribute name="string">Created By</attribute>
+                <attribute name="readonly">stage_id != 1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='employee_id']" position="after">
+                <field name="driver_id" readonly="stage_id != 1" widget="many2one_avatar"/>
+            </xpath>
             <xpath expr="//group/group[1]/field[@name='equipment_id']" position="before">
                 <field name="asset_type"/>
             </xpath>
             <xpath expr="//group/group[1]/field[@name='equipment_id']" position="after">
                 <field name="vehicle_id" invisible="asset_type == 'equipment' or not asset_type" readonly="stage_id != 1"/>
+                <field name="odometer" string="Last Odometer (km)" invisible="asset_type == 'equipment' or not asset_type" readonly="stage_id != 1"/>
             </xpath>
             <xpath expr="//group/group[1]/field[@name='equipment_id']" position="attributes">
                 <attribute name="invisible">asset_type == 'vehicle' or not asset_type</attribute>
+                <aatribute name="readonly">stage_id != 1</aatribute>
             </xpath>
             <xpath expr="//sheet/div[@class='oe_title']" position="replace">
                 <label for="request_no" string="Request No"/>
@@ -33,15 +42,12 @@
                 <page name="driver_request" string="Driver Request" invisible="not maintenance_type == 'corrective'">
                     <field name="driver_request_ids" readonly="stage_id != 1">
                         <tree editable="bottom">
-                            <field name="name"/>
+                            <field name="problem_id"/>
                         </tree>
                     </field>
                 </page>
             </xpath>
             <xpath expr="//field[@name='name']" position="attributes">
-                <attribute name="readonly">stage_id != 1</attribute>
-            </xpath>
-            <xpath expr="//field[@name='employee_id']" position="attributes">
                 <attribute name="readonly">stage_id != 1</attribute>
             </xpath>
             <xpath expr="//field[@name='asset_type']" position="attributes">
@@ -52,9 +58,11 @@
             </xpath>
             <xpath expr="//field[@name='maintenance_team_id']" position="attributes">
                 <attribute name="readonly">stage_id != 1</attribute>
+                <!-- <attribute name="invisible">1</attribute> -->
             </xpath>
             <xpath expr="//field[@name='user_id']" position="attributes">
                 <attribute name="readonly">stage_id != 1</attribute>
+                <attribute name="string">Mechanic</attribute>
             </xpath>
             <xpath expr="//field[@name='schedule_date']" position="attributes">
                 <attribute name="readonly">stage_id != 1</attribute>
@@ -103,27 +111,4 @@
             </xpath>
         </field>
     </record>
-    <!-- <record id="inherit_hr_equipment_view_calendar" model="ir.ui.view">
-        <field name="name">maintenance.request.calendar.inherit</field>
-        <field name="model">maintenance.request</field>
-        <field name="inherit_id" ref="maintenance.hr_equipment_view_calendar"/>
-        <field name="arch" type="xml">
-            <xpath expr="//calendar" position="replace">
-                <calendar date_start="schedule_date" date_delay="duration" color="employee_id" event_limit="10" js_class="calendar_with_recurrence">
-                    <field name="user_id" string="Mechanic" filters="1"/>
-                    <field name="priority"/>
-                    <field name="maintenance_type"/>
-                    <field name="log_service_name" />
-                    <field name="log_service_date"/>
-                    <field name="recurring_maintenance" invisible="1"/> 
-                    <field name="repeat_interval" invisible="1"/>
-                    <field name="repeat_unit" invisible="1"/>
-                    <field name="repeat_type" invisible="1"/>
-                    <field name="repeat_until" invisible="1"/>
-                    <field name="done" invisible="1"/>
-                    <field name="archive" invisible="1"/>
-                </calendar>
-            </xpath>
-        </field>
-    </record> -->
 </odoo>
